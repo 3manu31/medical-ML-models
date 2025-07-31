@@ -1,0 +1,14 @@
+model:
+  name: "cnn"
+  # Increased regularization to prevent overfitting on the small dataset
+  dropout_rate: 0.5
+  
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.0005
+  # Increased weight decay (L2 regularization) to prevent overfitting
+  weight_decay: 0.01
+  optimizer: "adam"
+  num_workers: 0
+  seed: 42
