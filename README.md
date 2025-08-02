@@ -95,6 +95,16 @@ Performance metrics comparisons on the test set (400 samples):
 
 ---
 
+## 🔍 Impact of Input Resolution: 28x28 vs. 224x224
+
+Increasing input resolution significantly refined the model's spatial attention. While the $28\times 28$ baseline exhibits diffuse activation, the $224\times 224$ prototype provides focal activation, precisely localizing pathology to microaneurysms and hemorrhages.
+
+| **Resolution Ablation Comparison (Severe DR Class 3)** |
+| :---: |
+| ![Impact of Resolution on Pathological Localization](assets/resolution_comparison.png) |
+
+---
+
 ## 📈 Comparative Clinical Performance
 
 Our transition to ResNet18 provided a significant leap in clinical utility. Below are the key artifacts validating the prototype's performance.
