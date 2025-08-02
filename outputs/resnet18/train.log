@@ -1,0 +1,114 @@
+2026-06-03 22:21:05,241 [INFO] Loaded config from: configs/hero_resnet.yaml
+2026-06-03 22:21:05,241 [INFO] Running experiments. Logs and output weights saved in: ./outputs/resnet18
+2026-06-03 22:21:05,241 [INFO] Using Apple Silicon (MPS) acceleration.
+2026-06-03 22:21:21,344 [INFO] RetinaMNIST Dataloaders loaded. Dynamic class weights computed: [0.4444444477558136, 1.6875, 1.0485436916351318, 1.113402009010315, 3.2727272510528564]
+2026-06-03 22:21:40,012 [INFO] Loaded config from: configs/hero_resnet.yaml
+2026-06-03 22:21:40,012 [INFO] Running experiments. Logs and output weights saved in: ./outputs/resnet18
+2026-06-03 22:21:40,012 [INFO] Using Apple Silicon (MPS) acceleration.
+2026-06-03 22:21:41,632 [INFO] RetinaMNIST Dataloaders loaded. Dynamic class weights computed: [0.4444444477558136, 1.6875, 1.0485436916351318, 1.113402009010315, 3.2727272510528564]
+2026-06-03 22:22:37,603 [INFO] Loaded config from: configs/hero_resnet.yaml
+2026-06-03 22:22:37,603 [INFO] Running experiments. Logs and output weights saved in: ./outputs/resnet18
+2026-06-03 22:22:37,603 [INFO] Using Apple Silicon (MPS) acceleration.
+2026-06-03 22:22:39,251 [INFO] RetinaMNIST Dataloaders loaded. Dynamic class weights computed: [0.4444444477558136, 1.6875, 1.0485436916351318, 1.113402009010315, 3.2727272510528564]
+2026-06-03 22:23:19,497 [INFO] Loaded config from: configs/hero_resnet.yaml
+2026-06-03 22:23:19,497 [INFO] Running experiments. Logs and output weights saved in: ./outputs/resnet18
+2026-06-03 22:23:19,497 [INFO] Using Apple Silicon (MPS) acceleration.
+2026-06-03 22:23:21,078 [INFO] RetinaMNIST Dataloaders loaded. Dynamic class weights computed: [0.4444444477558136, 1.6875, 1.0485436916351318, 1.113402009010315, 3.2727272510528564]
+2026-06-03 22:23:21,288 [INFO] Model RESNET18 initialized and moved to mps.
+2026-06-03 22:23:21,376 [INFO] --- Epoch 1/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:23:30,572 [INFO] Train -> Loss: 1.3410 | Acc: 0.4519 | QWK: 0.5092
+2026-06-03 22:23:30,572 [INFO] Val   -> Loss: 1.2216 | Acc: 0.6083 | QWK: 0.6224 | AUC-ROC: 0.8146
+2026-06-03 22:23:31,152 [INFO] New best validation QWK: 0.6224! Model checkpoint saved.
+2026-06-03 22:23:31,152 [INFO] --- Epoch 2/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:23:37,305 [INFO] Train -> Loss: 0.9872 | Acc: 0.6259 | QWK: 0.7095
+2026-06-03 22:23:37,305 [INFO] Val   -> Loss: 1.3177 | Acc: 0.5583 | QWK: 0.5961 | AUC-ROC: 0.8027
+2026-06-03 22:23:37,660 [INFO] --- Epoch 3/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:23:45,389 [INFO] Train -> Loss: 0.8450 | Acc: 0.6750 | QWK: 0.7475
+2026-06-03 22:23:45,390 [INFO] Val   -> Loss: 1.3746 | Acc: 0.5583 | QWK: 0.6549 | AUC-ROC: 0.8129
+2026-06-03 22:23:46,049 [INFO] New best validation QWK: 0.6549! Model checkpoint saved.
+2026-06-03 22:23:46,050 [INFO] --- Epoch 4/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:23:54,139 [INFO] Train -> Loss: 0.7370 | Acc: 0.7194 | QWK: 0.7859
+2026-06-03 22:23:54,139 [INFO] Val   -> Loss: 1.3846 | Acc: 0.5667 | QWK: 0.6411 | AUC-ROC: 0.8153
+2026-06-03 22:23:54,458 [INFO] --- Epoch 5/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:01,701 [INFO] Train -> Loss: 0.6650 | Acc: 0.7185 | QWK: 0.8009
+2026-06-03 22:24:01,701 [INFO] Val   -> Loss: 1.4044 | Acc: 0.5750 | QWK: 0.6191 | AUC-ROC: 0.8193
+2026-06-03 22:24:02,027 [INFO] --- Epoch 6/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:08,943 [INFO] Train -> Loss: 0.5949 | Acc: 0.7407 | QWK: 0.8075
+2026-06-03 22:24:08,943 [INFO] Val   -> Loss: 1.4436 | Acc: 0.5750 | QWK: 0.6186 | AUC-ROC: 0.8380
+2026-06-03 22:24:09,267 [INFO] --- Epoch 7/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:16,613 [INFO] Train -> Loss: 0.5091 | Acc: 0.7861 | QWK: 0.8424
+2026-06-03 22:24:16,614 [INFO] Val   -> Loss: 1.4769 | Acc: 0.5750 | QWK: 0.6136 | AUC-ROC: 0.8172
+2026-06-03 22:24:16,919 [INFO] --- Epoch 8/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:23,916 [INFO] Train -> Loss: 0.4656 | Acc: 0.8111 | QWK: 0.8617
+2026-06-03 22:24:23,916 [INFO] Val   -> Loss: 1.5930 | Acc: 0.5750 | QWK: 0.6667 | AUC-ROC: 0.8111
+2026-06-03 22:24:24,526 [INFO] New best validation QWK: 0.6667! Model checkpoint saved.
+2026-06-03 22:24:24,526 [INFO] --- Epoch 9/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:32,259 [INFO] Train -> Loss: 0.4691 | Acc: 0.8102 | QWK: 0.8552
+2026-06-03 22:24:32,259 [INFO] Val   -> Loss: 1.4576 | Acc: 0.6167 | QWK: 0.6425 | AUC-ROC: 0.8288
+2026-06-03 22:24:32,435 [INFO] --- Epoch 10/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:40,074 [INFO] Train -> Loss: 0.4145 | Acc: 0.8222 | QWK: 0.8681
+2026-06-03 22:24:40,074 [INFO] Val   -> Loss: 1.5236 | Acc: 0.5667 | QWK: 0.6667 | AUC-ROC: 0.8227
+2026-06-03 22:24:40,189 [INFO] --- Epoch 11/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:48,722 [INFO] Train -> Loss: 0.3427 | Acc: 0.8602 | QWK: 0.8890
+2026-06-03 22:24:48,723 [INFO] Val   -> Loss: 1.6792 | Acc: 0.6000 | QWK: 0.6691 | AUC-ROC: 0.8057
+2026-06-03 22:24:48,997 [INFO] New best validation QWK: 0.6691! Model checkpoint saved.
+2026-06-03 22:24:48,997 [INFO] --- Epoch 12/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:24:57,772 [INFO] Train -> Loss: 0.3553 | Acc: 0.8500 | QWK: 0.8788
+2026-06-03 22:24:57,772 [INFO] Val   -> Loss: 1.4749 | Acc: 0.6250 | QWK: 0.6518 | AUC-ROC: 0.8067
+2026-06-03 22:24:58,016 [INFO] --- Epoch 13/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:25:08,085 [INFO] Train -> Loss: 0.3470 | Acc: 0.8602 | QWK: 0.8899
+2026-06-03 22:25:08,085 [INFO] Val   -> Loss: 1.9974 | Acc: 0.5583 | QWK: 0.6141 | AUC-ROC: 0.7737
+2026-06-03 22:25:08,325 [INFO] --- Epoch 14/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:25:20,435 [INFO] Train -> Loss: 0.3105 | Acc: 0.8796 | QWK: 0.9177
+2026-06-03 22:25:20,435 [INFO] Val   -> Loss: 1.9170 | Acc: 0.6000 | QWK: 0.5878 | AUC-ROC: 0.8058
+2026-06-03 22:25:20,636 [INFO] --- Epoch 15/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:25:32,260 [INFO] Train -> Loss: 0.2742 | Acc: 0.8861 | QWK: 0.9184
+2026-06-03 22:25:32,260 [INFO] Val   -> Loss: 1.7612 | Acc: 0.6000 | QWK: 0.6566 | AUC-ROC: 0.8001
+2026-06-03 22:25:32,488 [INFO] --- Epoch 16/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:25:43,942 [INFO] Train -> Loss: 0.2700 | Acc: 0.8787 | QWK: 0.9007
+2026-06-03 22:25:43,943 [INFO] Val   -> Loss: 1.6655 | Acc: 0.5667 | QWK: 0.6229 | AUC-ROC: 0.8189
+2026-06-03 22:25:44,190 [INFO] --- Epoch 17/30 (Learning Rate: 0.000100) ---
+2026-06-03 22:25:59,680 [INFO] Train -> Loss: 0.2656 | Acc: 0.9009 | QWK: 0.9169
+2026-06-03 22:25:59,680 [INFO] Val   -> Loss: 1.7773 | Acc: 0.5833 | QWK: 0.6272 | AUC-ROC: 0.8076
+2026-06-03 22:25:59,937 [INFO] --- Epoch 18/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:26:13,847 [INFO] Train -> Loss: 0.1946 | Acc: 0.9241 | QWK: 0.9412
+2026-06-03 22:26:13,847 [INFO] Val   -> Loss: 1.7165 | Acc: 0.5583 | QWK: 0.5924 | AUC-ROC: 0.8037
+2026-06-03 22:26:14,170 [INFO] --- Epoch 19/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:26:26,338 [INFO] Train -> Loss: 0.1443 | Acc: 0.9352 | QWK: 0.9472
+2026-06-03 22:26:26,339 [INFO] Val   -> Loss: 1.9431 | Acc: 0.5667 | QWK: 0.6145 | AUC-ROC: 0.7992
+2026-06-03 22:26:26,588 [INFO] --- Epoch 20/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:26:36,175 [INFO] Train -> Loss: 0.1482 | Acc: 0.9426 | QWK: 0.9568
+2026-06-03 22:26:36,176 [INFO] Val   -> Loss: 1.8128 | Acc: 0.5833 | QWK: 0.6746 | AUC-ROC: 0.8018
+2026-06-03 22:26:36,643 [INFO] New best validation QWK: 0.6746! Model checkpoint saved.
+2026-06-03 22:26:36,643 [INFO] --- Epoch 21/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:26:48,515 [INFO] Train -> Loss: 0.1475 | Acc: 0.9426 | QWK: 0.9577
+2026-06-03 22:26:48,515 [INFO] Val   -> Loss: 1.7998 | Acc: 0.6000 | QWK: 0.6582 | AUC-ROC: 0.8088
+2026-06-03 22:26:48,755 [INFO] --- Epoch 22/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:27:00,044 [INFO] Train -> Loss: 0.1421 | Acc: 0.9500 | QWK: 0.9433
+2026-06-03 22:27:00,044 [INFO] Val   -> Loss: 2.1671 | Acc: 0.5833 | QWK: 0.6617 | AUC-ROC: 0.7847
+2026-06-03 22:27:00,249 [INFO] --- Epoch 23/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:27:10,191 [INFO] Train -> Loss: 0.1135 | Acc: 0.9574 | QWK: 0.9683
+2026-06-03 22:27:10,191 [INFO] Val   -> Loss: 2.0685 | Acc: 0.6333 | QWK: 0.6518 | AUC-ROC: 0.7950
+2026-06-03 22:27:10,440 [INFO] --- Epoch 24/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:27:22,831 [INFO] Train -> Loss: 0.1031 | Acc: 0.9648 | QWK: 0.9733
+2026-06-03 22:27:22,831 [INFO] Val   -> Loss: 1.9811 | Acc: 0.6250 | QWK: 0.6339 | AUC-ROC: 0.8081
+2026-06-03 22:27:23,055 [INFO] --- Epoch 25/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:27:35,531 [INFO] Train -> Loss: 0.1006 | Acc: 0.9722 | QWK: 0.9808
+2026-06-03 22:27:35,532 [INFO] Val   -> Loss: 2.0606 | Acc: 0.6167 | QWK: 0.6435 | AUC-ROC: 0.7957
+2026-06-03 22:27:35,783 [INFO] --- Epoch 26/30 (Learning Rate: 0.000050) ---
+2026-06-03 22:27:53,843 [INFO] Train -> Loss: 0.0858 | Acc: 0.9657 | QWK: 0.9592
+2026-06-03 22:27:53,844 [INFO] Val   -> Loss: 2.0399 | Acc: 0.6167 | QWK: 0.6388 | AUC-ROC: 0.7987
+2026-06-03 22:27:54,171 [INFO] --- Epoch 27/30 (Learning Rate: 0.000025) ---
+2026-06-03 22:28:05,932 [INFO] Train -> Loss: 0.0788 | Acc: 0.9731 | QWK: 0.9689
+2026-06-03 22:28:05,933 [INFO] Val   -> Loss: 2.0098 | Acc: 0.6250 | QWK: 0.6687 | AUC-ROC: 0.8133
+2026-06-03 22:28:06,162 [INFO] --- Epoch 28/30 (Learning Rate: 0.000025) ---
+2026-06-03 22:28:19,958 [INFO] Train -> Loss: 0.0727 | Acc: 0.9769 | QWK: 0.9802
+2026-06-03 22:28:19,959 [INFO] Val   -> Loss: 1.9284 | Acc: 0.6167 | QWK: 0.6247 | AUC-ROC: 0.8070
+2026-06-03 22:28:20,218 [INFO] --- Epoch 29/30 (Learning Rate: 0.000025) ---
+2026-06-03 22:28:31,228 [INFO] Train -> Loss: 0.0588 | Acc: 0.9870 | QWK: 0.9899
+2026-06-03 22:28:31,228 [INFO] Val   -> Loss: 1.9585 | Acc: 0.6417 | QWK: 0.6610 | AUC-ROC: 0.8071
+2026-06-03 22:28:31,395 [INFO] --- Epoch 30/30 (Learning Rate: 0.000025) ---
+2026-06-03 22:28:41,906 [INFO] Train -> Loss: 0.0588 | Acc: 0.9778 | QWK: 0.9742
+2026-06-03 22:28:41,906 [INFO] Val   -> Loss: 2.0505 | Acc: 0.6167 | QWK: 0.6401 | AUC-ROC: 0.7974
+2026-06-03 22:28:42,091 [INFO] Training complete. Saving curves...
+2026-06-03 22:28:42,567 [INFO] Done! Results and checkpoints saved under: ./outputs/resnet18

@@ -7,15 +7,14 @@ from medmnist import RetinaMNIST
 class InMemoryRetinaMNIST(Dataset):
     """
     Wraps the MedMNIST RetinaMNIST dataset by loading all images and labels into RAM
-    at initialization time. This avoids disk access and redundant logs/warnings
-    during epoch iterations.
+    at initialization time using 224x224 high-resolution images.
     """
     def __init__(self, split, transform=None):
-        # Initialize original dataset once to download/extract
-        base_dataset = RetinaMNIST(split=split, download=True, size=28)
+        # Initialize original dataset once to download/extract at 224x224 size
+        base_dataset = RetinaMNIST(split=split, download=True, size=224)
         
         # Load all data into memory
-        self.imgs = base_dataset.imgs.copy()  # Shape: (N, 28, 28, 3)
+        self.imgs = base_dataset.imgs.copy()  # Shape: (N, 224, 224, 3)
         self.labels = base_dataset.labels.copy()  # Shape: (N, 1)
         self.transform = transform
         
@@ -28,26 +27,27 @@ class InMemoryRetinaMNIST(Dataset):
         
         # Apply transformation if specified
         if self.transform is not None:
-            # transforms.ToTensor() expects PIL Image or numpy array [H, W, C]
             img = self.transform(img)
             
         return img, target
 
 def get_transforms():
     """
-    Get training and validation/testing transforms.
+    Get training and validation/testing transforms with ImageNet normalizations
+    and robust clinical augmentations.
     """
     train_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomVerticalFlip(p=0.5),
         transforms.RandomRotation(degrees=15),
-        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+        transforms.ColorJitter(brightness=0.1, contrast=0.1),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
     
     val_test_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
     
     return train_transform, val_test_transform
@@ -66,8 +66,6 @@ def get_class_weights(dataset):
 def get_data_loaders(batch_size=32, num_workers=0):
     """
     Instantiate InMemoryRetinaMNIST datasets and return PyTorch DataLoaders.
-    Defaulting num_workers to 0 prevents subprocess spawning which suppresses
-    redundant warnings and logs.
     """
     train_transform, val_test_transform = get_transforms()
     
@@ -78,8 +76,6 @@ def get_data_loaders(batch_size=32, num_workers=0):
     
     class_weights = get_class_weights(train_dataset)
     
-    # Using num_workers=0 executes everything in the main process,
-    # ensuring no subprocess warnings/re-loading messages.
     train_loader = DataLoader(
         dataset=train_dataset,
         batch_size=batch_size,

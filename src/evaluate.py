@@ -11,6 +11,7 @@ from data import get_data_loaders
 from models import get_model
 from metrics import compute_metrics
 from utils import load_yaml_config
+from gradcam import GradCAM, generate_gradcam_overlay, save_gradcam_plot
 
 def plot_confusion_matrix(y_true, y_pred, class_names, output_path):
     """
@@ -43,13 +44,8 @@ def plot_roc_curves(y_true, y_prob, num_classes, class_names, output_path):
     Plots and saves multi-class One-vs-Rest ROC curves.
     """
     plt.figure(figsize=(8, 6))
-    
-    # Compute ROC curve and ROC area for each class
     for i in range(num_classes):
-        # Create binary labels for the current class
         y_true_binary = (y_true == i).astype(int)
-        
-        # Check if class exists in targets to prevent errors
         if np.sum(y_true_binary) > 0:
             fpr, tpr, _ = roc_curve(y_true_binary, y_prob[:, i])
             roc_auc = auc(fpr, tpr)
@@ -66,6 +62,74 @@ def plot_roc_curves(y_true, y_prob, num_classes, class_names, output_path):
     plt.tight_layout()
     plt.savefig(output_path)
     plt.close()
+
+def generate_evaluation_gradcam(model, model_name, device, test_loader, output_dir, class_names):
+    """
+    Finds one representative sample per class from the test split,
+    generates Grad-CAM overlays, and saves them to output_dir.
+    """
+    # Select target layer based on model type
+    if model_name.lower() == "resnet18":
+        target_layer = model.resnet.layer4[-1]
+    elif model_name.lower() == "cnn":
+        target_layer = model.features[14]
+    else:
+        print("Skipping Grad-CAM. Visual explanations only supported for 'cnn' and 'resnet18'.")
+        return
+        
+    grad_cam = GradCAM(model, target_layer)
+    found_classes = {}
+    
+    # Locate one test image per class
+    for images, targets in test_loader:
+        for b_idx in range(images.size(0)):
+            target_idx = targets[b_idx].squeeze().item()
+            
+            if target_idx not in found_classes:
+                # Denormalize image
+                image_np = images[b_idx].permute(1, 2, 0).numpy()
+                
+                # Use appropriate denormalization constants
+                if model_name.lower() == "resnet18":
+                    mean = np.array([0.485, 0.456, 0.406])
+                    std = np.array([0.229, 0.224, 0.225])
+                    image_np = (image_np * std) + mean
+                else:
+                    image_np = (image_np * 0.5) + 0.5
+                    
+                image_np = np.clip(image_np, 0, 1)
+                
+                # Store tensor with batch dimension 1
+                found_classes[target_idx] = {
+                    'tensor': images[b_idx:b_idx+1],
+                    'orig': image_np
+                }
+                
+            if len(found_classes) == len(class_names):
+                break
+        if len(found_classes) == len(class_names):
+            break
+            
+    print("Generating representative test set Grad-CAM explanations...")
+    # Run Grad-CAM on CPU to avoid hooks memory leaks on GPU/MPS
+    model.cpu()
+    
+    for class_idx in sorted(found_classes.keys()):
+        class_data = found_classes[class_idx]
+        image_tensor = class_data['tensor']
+        orig_image = class_data['orig']
+        
+        heatmap, _ = grad_cam(image_tensor, class_idx=class_idx)
+        blended, orig_norm = generate_gradcam_overlay(orig_image, heatmap, alpha=0.45)
+        
+        out_filename = f"test_gradcam_class_{class_idx}.png"
+        out_path = os.path.join(output_dir, out_filename)
+        save_gradcam_plot(orig_norm, blended, class_idx, class_names[class_idx], out_path)
+        
+    grad_cam.remove_hooks()
+    # Move model back to device
+    model.to(device)
+    print("Test set Grad-CAM generated.")
 
 def main():
     parser = argparse.ArgumentParser(description="RetinaMNIST Clinical Decision Support Evaluation Pipeline")
@@ -96,8 +160,7 @@ def main():
     _, _, test_loader, _ = get_data_loaders(batch_size=config['training'].get('batch_size', 32))
     
     # Initialize and load model weights
-    dropout_rate = config['model'].get('dropout_rate', 0.4)
-    model = get_model(model_name, dropout_rate=dropout_rate).to(device)
+    model = get_model(model_name).to(device)
     model.load_state_dict(torch.load(args.checkpoint, map_location=device))
     model.eval()
     
@@ -157,6 +220,9 @@ def main():
     print("Generating plots...")
     plot_confusion_matrix(y_true, y_pred, class_names, os.path.join(eval_output_dir, "confusion_matrix.png"))
     plot_roc_curves(y_true, y_prob, len(class_names), class_names, os.path.join(eval_output_dir, "roc_curve.png"))
+    
+    # Automatically generate explainability heatmaps
+    generate_evaluation_gradcam(model, model_name, device, test_loader, eval_output_dir, class_names)
     
     print(f"Evaluation complete. Artifacts saved in: {eval_output_dir}")
 

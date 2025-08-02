@@ -28,11 +28,9 @@ Medical datasets are frequently imbalanced. In this split, the prevalence of hea
 ## 🛠️ Methodological Approach
 
 ### 1. Model Architectures
-* **Baseline (Linear)**: A single fully connected layer mapping flattened $28\times 28\times 3$ inputs ($2352$ dimensions) directly to 5 output logits.
-* **Hero (Custom CNN)**: A deep convolutional network containing:
-  - 3 Convolutional blocks with `BatchNorm2d` and `ReLU` activation.
-  - Periodic `MaxPool2d` layers to reduce dimensionality.
-  - Dropout regularization ($p=0.4$) in the classifier head to prevent overfitting on the small sample size.
+* **Baseline (Linear)**: A single fully connected layer mapping flattened inputs directly to 5 output logits.
+* **Tuned Custom CNN**: A deep convolutional network containing 3 Conv blocks with `BatchNorm2d`, `ReLU`, MaxPool, and dropout ($p=0.5$).
+* **Clinical Prototype (ResNet18)**: Pre-trained ResNet18 fine-tuned at high-resolution ($224\times 224$). Early blocks are frozen to retain ImageNet spatial primitives, while the final block (`layer4`) and classification head (`fc`) are unfrozen to adapt to diabetic retinopathy pathology.
 
 ### 2. Validation & Evaluation Workflow
 * **Deterministic Seeds**: Full reproducibility is achieved by pinning random seeds across `numpy`, `random`, and `torch` (including macOS Metal Performance Shaders / CUDA).
@@ -92,47 +90,48 @@ Performance metrics comparisons on the test set (400 samples):
 | Model | Test Accuracy | Macro F1 | QWK | Macro AUC-ROC |
 | :--- | :--- | :--- | :--- | :--- |
 | **Baseline Linear** | `0.4950` | `0.3105` | `0.5206` | `0.7158` |
-| **Custom CNN (Hero)** | `0.4900` | `0.3776` | `0.5338` | `0.7311` |
+| **Tuned Custom CNN** | `0.4900` | `0.3776` | `0.5338` | `0.7311` |
+| **ResNet18 (Clinical Prototype)** | **`0.5650`** | **`0.4972`** | **`0.7220`** | **`0.8361`** |
 
 ---
 
-## 📈 Performance Visuals
+## 📈 Comparative Clinical Performance
 
-To validate the clinical reliability of the models, we analyzed their diagnostic classifications using confusion matrices and monitored convergence stability during optimization.
+Our transition to ResNet18 provided a significant leap in clinical utility. Below are the key artifacts validating the prototype's performance.
 
-### 1. Classification Performance (Confusion Matrices)
-The confusion matrices highlight the diagnostic recall (sensitivity) for each severity grade. The Custom CNN exhibits much better class balance compared to the linear model.
-
-| **Linear Baseline Confusion Matrix** | **Tuned CNN Confusion Matrix** |
+| **ResNet18 Convergence** | **Clinical Diagnostic Focus (Grad-CAM)** |
 | :---: | :---: |
-| ![Linear Confusion Matrix](assets/linear_confusion_matrix.png) | ![CNN Confusion Matrix](assets/cnn_confusion_matrix.png) |
+| ![ResNet18 Convergence Curve](assets/resnet18_qwk_curve.png) | ![ResNet18 Clinical Focus](assets/resnet18_gradcam_class_3.png) |
 
-*The CNN demonstrates more distributed sensitivity across minority classes (mild/severe cases), whereas the linear model collapses heavily towards predicting moderate classes (Class 2).*
-
-### 2. Convergence Stability (CNN Training Curves)
-By scaling dropout ($p=0.5$), weight decay ($0.01$), and applying a dynamic learning rate scheduler (`ReduceLROnPlateau`), we successfully prevented overfitting and allowed the model to converge smoothly up to 100 epochs.
-
-| Loss Curve (CNN) | Kappa Metric Curve (CNN) |
-| :---: | :---: |
-| ![CNN Loss Curve](assets/cnn_loss_curve.png) | ![CNN QWK Curve](assets/cnn_qwk_curve.png) |
+*Above: Training curves showing convergence stability (left) and Grad-CAM output demonstrating the model successfully localizing its diagnostic attention to retinal lesions in a severe-grade image (right).*
 
 ---
 
-## 🔍 Model Explainability (Grad-CAM)
+## 📊 Diagnostic Reliability & Interpretability
 
-To move beyond "black-box" predictions, we implemented **Grad-CAM (Gradient-weighted Class Activation Mapping)**. This diagnostic technique extracts gradients from the final convolutional layer of the Custom CNN to identify the exact visual features driving the model's classification.
+To validate the clinical safety of the prototype, we analyzed the diagnostic classifications using normalized confusion matrices and monitored spatial activation maps.
 
-### Retinopathy Grading Interpretability Gallery
+### 1. Performance Reliability (Confusion Matrix)
+The confusion matrices highlight the diagnostic recall (sensitivity) for each severity grade. 
+
+| **Linear Baseline Confusion Matrix** | **ResNet18 Prototype Confusion Matrix** |
+| :---: | :---: |
+| ![Linear Confusion Matrix](assets/linear_confusion_matrix.png) | ![ResNet18 Confusion Matrix](assets/resnet18_confusion_matrix.png) |
+
+*The Normalized Confusion Matrix for ResNet18 shows high diagonal concentration, confirming strong diagnostic agreement. Importantly, off-diagonal errors are primarily restricted to adjacent stages (e.g., predicting Moderate instead of Mild), confirming the network respects the ordinal nature of DR grading.*
+
+### 2. Clinical Explainability (Grad-CAM Gallery)
+We extract gradients from the final convolutional block of the ResNet18 model (`layer4[-1]`) to map class activation scores back onto the original $224\times 224$ fundus images.
 
 | Severity Grade | Visual Explanation (Original vs. Grad-CAM Activation Heatmap) |
 | :--- | :--- |
-| **0: Normal** | ![Class 0 Normal](assets/gradcam_class_0.png) |
-| **1: Mild** | ![Class 1 Mild](assets/gradcam_class_1.png) |
-| **2: Moderate** | ![Class 2 Moderate](assets/gradcam_class_2.png) |
-| **3: Severe** | ![Class 3 Severe](assets/gradcam_class_3.png) |
-| **4: Proliferative** | ![Class 4 Proliferative](assets/gradcam_class_4.png) |
+| **0: Normal** | ![Class 0 Normal](assets/resnet18_gradcam_class_0.png) |
+| **1: Mild** | ![Class 1 Mild](assets/resnet18_gradcam_class_1.png) |
+| **2: Moderate** | ![Class 2 Moderate](assets/resnet18_gradcam_class_2.png) |
+| **3: Severe** | ![Class 3 Severe](assets/resnet18_gradcam_class_3.png) |
+| **4: Proliferative** | ![Class 4 Proliferative](assets/resnet18_gradcam_class_4.png) |
 
-*The Grad-CAM visualizations confirm the model identifies pathological features such as microaneurysms, hemorrhages, and exudates, aligning with established clinical ophthalmic diagnostic patterns.*
+*Visualizing clinical attention: Grad-CAM heatmaps verify that the ResNet18 prototype localizes its diagnostic attention to pathological markers—focusing on hemorrhages, exudates, and microaneurysms—rather than peripheral noise or black circular image margins.*
 
 ---
 
